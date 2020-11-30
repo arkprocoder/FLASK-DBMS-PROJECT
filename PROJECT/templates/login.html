@@ -15,14 +15,26 @@ Login
 </div>
 
 <div class="col-md-4 jumbotron">
-<div class="alert alert-primary alert-dismissible fade show" role="alert">
-  <strong>Holy !</strong> You sho
+
+<h4 class="text-center bg-success text-white">Login</h4>
+<br>
+
+{% with messages=get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+
+<div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+    {{message}}
+
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<h4 class="text-center bg-success text-white">Login</h4>
-<br>
+
+
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
 
 
 <form action="/login" method="post">
