@@ -75,6 +75,14 @@ class Doctors(db.Model):
     doctorname=db.Column(db.String(50))
     dept=db.Column(db.String(50))
 
+class Trigr(db.Model):
+    tid=db.Column(db.Integer,primary_key=True)
+    pid=db.Column(db.Integer)
+    email=db.Column(db.String(50))
+    name=db.Column(db.String(50))
+    action=db.Column(db.String(50))
+    timestamp=db.Column(db.String(50))
+
 
 
 
@@ -122,7 +130,9 @@ def patient():
         subject="HOSPITAL MANAGEMENT SYSTEM"
         query=db.engine.execute(f"INSERT INTO `patients` (`email`,`name`,	`gender`,`slot`,`disease`,`time`,`date`,`dept`,`number`) VALUES ('{email}','{name}','{gender}','{slot}','{disease}','{time}','{date}','{dept}','{number}')")
 
-        mail.send_message(subject, sender=params['gmail-user'], recipients=[email],body="YOUR bOOKING IS CONFIRMED THANKS FOR CHOOSING US")
+# mail starts from here
+
+        # mail.send_message(subject, sender=params['gmail-user'], recipients=[email],body=f"YOUR bOOKING IS CONFIRMED THANKS FOR CHOOSING US \nYour Entered Details are :\nName: {name}\nSlot: {slot}")
 
 
 
@@ -138,9 +148,6 @@ def bookings():
     em=current_user.email
     query=db.engine.execute(f"SELECT * FROM `patients` WHERE email='{em}'")
     return render_template('booking.html',query=query)
-
-
-
 
 
 @app.route("/edit/<string:pid>",methods=['POST','GET'])
@@ -239,6 +246,32 @@ def test():
     except:
         return 'My db is not Connected'
     
+
+@app.route('/details')
+@login_required
+def details():
+    # posts=Trigr.query.all()
+    posts=db.engine.execute("SELECT * FROM `trigr`")
+    return render_template('trigers.html',posts=posts)
+
+
+@app.route('/search',methods=['POST','GET'])
+@login_required
+def search():
+    if request.method=="POST":
+        query=request.form.get('search')
+        dept=Doctors.query.filter_by(dept=query).first()
+        name=Doctors.query.filter_by(doctorname=query).first()
+        if name:
+
+            flash("Doctor is Available","info")
+        else:
+
+            flash("Doctor is Not Available","danger")
+    return render_template('index.html')
+
+
+
 
 
 

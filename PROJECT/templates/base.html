@@ -45,6 +45,10 @@
                     <a class="nav-link" href="/bookings">Booking Details</a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link" href="/details">Patients Details</a>
+                </li>
+
              
 
     {% if current_user.is_authenticated  %}
@@ -75,8 +79,8 @@
 {% endif %}
 
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <form class="form-inline my-2 my-lg-0" action="/search" method="post">
+                <input class="form-control mr-sm-2" type="search" placeholder="Department" name="search" aria-label="Search">
                 <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
